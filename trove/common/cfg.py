@@ -324,7 +324,8 @@ common_opts = [
                          'cassandra': '459a230d-4e97-4344-9067-2a54a310b0ed',
                          'couchbase': 'fa62fe68-74d9-4779-a24e-36f19602c415',
                          'mongodb': 'c8c907af-7375-456f-b929-b637ff9209ee',
-                         'postgresql': 'ac277e0d-4f21-40aa-b347-1ea31e571720'},
+                         'postgresql': 'ac277e0d-4f21-40aa-b347-1ea31e571720'
+                         'vertica': 'c8d805af-7375-456f-b929-b637ee9209ae'},
                 help='Unique ID to tag notification events.'),
     cfg.StrOpt('nova_proxy_admin_user', default='',
                help="Admin username used to connect to Nova.", secret=True),
@@ -371,7 +372,7 @@ common_opts = [
                help="Describes the actual network manager used for "
                     "the management of network attributes "
                     "(security groups, floating IPs, etc.)."),
-    cfg.IntOpt('usage_timeout', default=600,
+    cfg.IntOpt('usage_timeout', default=2000,
                help='Maximum time (in seconds) to wait for a Guest to become '
                     'active.'),
     cfg.IntOpt('restore_usage_timeout', default=36000,
@@ -740,6 +741,51 @@ postgresql_opts = [
     cfg.ListOpt('ignore_dbs', default=['postgres']),
 ]
 
+# Vertica
+vertica_group = cfg.OptGroup(
+    'vertica', title='Vertica options',
+    help="Oslo option group designed for Vertica datastore")
+vertica_opts = [
+    cfg.ListOpt('tcp_ports', default=["5433"],
+                help='List of TCP ports and/or port ranges to open '
+                     'in the security group (only applicable '
+                     'if trove_security_groups_support is True).'),
+    cfg.ListOpt('udp_ports', default=[],
+                help='List of UDP ports and/or port ranges to open '
+                     'in the security group (only applicable '
+                     'if trove_security_groups_support is True).'),
+    cfg.IntOpt('usage_timeout', default=2000,
+               help='Maximum time (in seconds) to wait for a Guest to become '
+                    'active.'),
+    cfg.StrOpt('backup_strategy', default=None,
+               help='Default strategy to perform backups.',
+               deprecated_name='backup_strategy',
+               deprecated_group='DEFAULT'),
+    cfg.DictOpt('backup_incremental_strategy', default={},
+                help='Incremental Backup Runner based on the default '
+                'strategy. For strategies that do not implement an '
+                'incremental, the runner will use the default full backup.',
+                deprecated_name='backup_incremental_strategy',
+                deprecated_group='DEFAULT'),
+    cfg.StrOpt('replication_strategy', default=None,
+               help='Default strategy for replication.'),
+    cfg.StrOpt('mount_point', default='/var/lib/vertica',
+               help="Filesystem path for mounting "
+               "volumes if volume support is enabled."),
+    cfg.BoolOpt('volume_support', default=True,
+                help='Whether to provision a Cinder volume for datadir.'),
+    cfg.StrOpt('device_path', default='/dev/vdb',
+               help='Device path for volume if volume support is enabled.'),
+    cfg.StrOpt('backup_namespace', default=None,
+               help='Namespace to load backup strategies from.',
+               deprecated_name='backup_namespace',
+               deprecated_group='DEFAULT'),
+    cfg.StrOpt('restore_namespace', default=None,
+               help='Namespace to load restore strategies from.',
+               deprecated_name='restore_namespace',
+               deprecated_group='DEFAULT'),
+]
+
 CONF = cfg.CONF
 
 CONF.register_opts(path_opts)
@@ -752,6 +798,7 @@ CONF.register_group(cassandra_group)
 CONF.register_group(couchbase_group)
 CONF.register_group(mongodb_group)
 CONF.register_group(postgresql_group)
+CONF.register_group(vertica_group)
 
 CONF.register_opts(mysql_opts, mysql_group)
 CONF.register_opts(percona_opts, percona_group)
@@ -760,6 +807,7 @@ CONF.register_opts(cassandra_opts, cassandra_group)
 CONF.register_opts(couchbase_opts, couchbase_group)
 CONF.register_opts(mongodb_opts, mongodb_group)
 CONF.register_opts(postgresql_opts, postgresql_group)
+CONF.register_opts(vertica_opts, vertica_group)
 
 
 def custom_parser(parsername, parser):

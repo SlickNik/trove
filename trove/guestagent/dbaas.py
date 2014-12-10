@@ -40,6 +40,7 @@ defaults = {
     'couchbase': 'trove.guestagent.datastore.couchbase.manager.Manager',
     'mongodb': 'trove.guestagent.datastore.mongodb.manager.Manager',
     'postgresql': 'trove.guestagent.datastore.postgresql.manager.Manager',
+    'vertica': 'trove.guestagent.datastore.vertica.manager.Manager',
 }
 CONF = cfg.CONF
 
