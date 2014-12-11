@@ -21,7 +21,7 @@ CREATE_DB = (" /opt/vertica/bin/adminTools -t create_db -s"
 
 INSTALL_VERTICA = ("/opt/vertica/sbin/install_vertica -s %s"
                    " -d %s -X -N -S default -r"
-                   " %s -L %s  -Y --failure-threshold NONE")
+                   " %s -L %s  -Y --no-system-checks")
 
 STOP_DB = "/opt/vertica/bin/adminTools -t stop_db -F -d %s -p '%s'"
 START_DB = "/opt/vertica/bin/adminTools -t start_db -d %s -p '%s'"

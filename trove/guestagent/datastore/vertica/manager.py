@@ -46,6 +46,7 @@ class Manager(periodic_task.PeriodicTasks):
         """Makes ready DBAAS on a Guest container."""
         try:
             LOG.info(_("Setting instance status BUILDING."))
+            self.appStatus.begin_install()
             if device_path:
                 #stop and do not update database
                 device = volume.VolumeDevice(device_path)
@@ -58,8 +59,8 @@ class Manager(periodic_task.PeriodicTasks):
                     # mount the volume
                     device.mount(mount_point)
                     LOG.debug(_("Mounted the volume."))
-            self.appStatus.begin_install()
             self.app.install_if_needed(packages)
+            self.app.prepare_for_install_vertica()
             self.app.install_vertica()
             self.app.create_db()
             self.app.complete_install_or_restart()

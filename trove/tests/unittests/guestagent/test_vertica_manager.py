@@ -34,6 +34,7 @@ class GuestAgentManagerTest(testtools.TestCase):
         self.origin_unmount = volume.VolumeDevice.unmount
         self.origin_mount_points = volume.VolumeDevice.mount_points
         self.origin_os_path_exists = os.path.exists
+        self.origin_prep_for_install = VerticaApp.prepare_for_install_vertica
         self.origin_install_vertica = VerticaApp.install_vertica
         self.origin_create_db = VerticaApp.create_db
         self.origin_stop_db = VerticaApp.stop_db
@@ -51,6 +52,7 @@ class GuestAgentManagerTest(testtools.TestCase):
         volume.VolumeDevice.mount_points = self.origin_mount_points
         os.path.exists = self.origin_os_path_exists
         VerticaApp.create_db = self.origin_create_db
+        VerticaApp.prepare_for_install_vertica = self.origin_prep_for_install
         VerticaApp.install_vertica = self.origin_install_vertica
         VerticaApp.stop_db = self.origin_stop_db
         VerticaApp.start_db = self.origin_start_db
@@ -95,6 +97,7 @@ class GuestAgentManagerTest(testtools.TestCase):
         VolumeDevice.unmount = MagicMock(return_value=None)
 
         VerticaApp.install_if_needed = MagicMock(return_value=None)
+        VerticaApp.prepare_for_install_vertica = MagicMock(return_value=None)
         VerticaApp.install_vertica = MagicMock(return_value=None)
         VerticaApp.create_db = MagicMock(return_value=None)
         VerticaApp.complete_install_or_restart = MagicMock(return_value=None)
@@ -119,6 +122,7 @@ class GuestAgentManagerTest(testtools.TestCase):
             self.assertEqual(VolumeDevice.unmount.call_count, 0)
 
         VerticaApp.install_if_needed.assert_any_call(['vertica'])
+        VerticaApp.prepare_for_install_vertica.assert_any_call()
         VerticaApp.complete_install_or_restart.assert_any_call()
         VerticaApp.install_vertica.assert_any_call()
         VerticaApp.create_db.assert_any_call()

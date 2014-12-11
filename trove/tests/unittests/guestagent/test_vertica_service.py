@@ -48,6 +48,13 @@ class GuestAgentServiceTest(testtools.TestCase):
         self.assertTrue(App._get_database_password.called)
         self.assertEqual(subprocess.call.call_count, 1)
 
+    @mock.patch.object(utils, 'execute', Mock(return_value=0))
+    def test_prepare_for_install_vertica(self):
+        mock_status = MagicMock()
+        App = VerticaApp(status=mock_status)
+        App.prepare_for_install_vertica()
+        self.assertEqual(utils.execute.call_count, 1)
+
     @mock.patch.object(subprocess, 'call', Mock(return_value=0))
     def test_restart_db(self):
         mock_status = MagicMock()

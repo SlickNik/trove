@@ -203,3 +203,13 @@ class VerticaApp(object):
         if not packager.pkg_is_installed(packages):
             LOG.debug('Installing Vertica Package.')
             packager.pkg_install(packages, None, system.INSTALL_TIMEOUT)
+
+
+    def prepare_for_install_vertica(self):
+        """This method executes preparatory method before
+        executing install_vertica"""
+        utils.execute("VERT_DBA_USR=dbadmin", "VERT_DBA_HOME=/home/dbadmin",
+                      "VERT_DBA_GRP=verticadba",
+                      "/opt/vertica/oss/python/bin/python", "-m",
+                      "vertica.local_coerce",
+                      run_as_root=True, root_helper="sudo")
