@@ -204,7 +204,6 @@ class VerticaApp(object):
             LOG.debug('Installing Vertica Package.')
             packager.pkg_install(packages, None, system.INSTALL_TIMEOUT)
 
-
     def prepare_for_install_vertica(self):
         """This method executes preparatory method before
         executing install_vertica"""
