@@ -205,8 +205,7 @@ class VerticaApp(object):
             packager.pkg_install(packages, None, system.INSTALL_TIMEOUT)
 
     def prepare_for_install_vertica(self):
-        """This method executes preparatory method before
-        executing install_vertica"""
+        """This method executes preparatory command for install_vertica."""
         utils.execute("VERT_DBA_USR=dbadmin", "VERT_DBA_HOME=/home/dbadmin",
                       "VERT_DBA_GRP=verticadba",
                       "/opt/vertica/oss/python/bin/python", "-m",

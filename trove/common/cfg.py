@@ -324,7 +324,7 @@ common_opts = [
                          'cassandra': '459a230d-4e97-4344-9067-2a54a310b0ed',
                          'couchbase': 'fa62fe68-74d9-4779-a24e-36f19602c415',
                          'mongodb': 'c8c907af-7375-456f-b929-b637ff9209ee',
-                         'postgresql': 'ac277e0d-4f21-40aa-b347-1ea31e571720'
+                         'postgresql': 'ac277e0d-4f21-40aa-b347-1ea31e571720',
                          'vertica': 'c8d805af-7375-456f-b929-b637ee9209ae'},
                 help='Unique ID to tag notification events.'),
     cfg.StrOpt('nova_proxy_admin_user', default='',
